@@ -12,12 +12,17 @@ const database = new Sequelize(process.env.DB_SCHEMA || 'sqlite',
                                     storage: 'database.sqlite'
                                 });
 
-const addMoney = () => {
-console.log('money added');
-}
+const addName = () => {
+    console.log('name added');
+};
+
+const logMoney = (value) => {
+    console.log(`${value} gold logged`);
+};
 
 module.exports = {
     database: database,
     Sequelize: Sequelize,
-    addMoney: addMoney
+    addName: addName,
+    logMoney: logMoney,
 };
