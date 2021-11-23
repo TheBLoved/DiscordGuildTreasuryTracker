@@ -1,7 +1,7 @@
 // database.js
 
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize(process.env.DB_SCHEMA || 'sqlite',
+const database = new Sequelize(process.env.DB_SCHEMA || 'sqlite',
                                 process.env.DB_USER || 'sqlite',
                                 process.env.DB_PASSWORD || '',
                                 {
@@ -11,19 +11,13 @@ const sequelize = new Sequelize(process.env.DB_SCHEMA || 'sqlite',
                                     logging: false,
                                     storage: 'database.sqlite'
                                 });
-const Names = sequelize.define('names', {
-    name: {
-        type: Sequelize.STRING,
-        unique: true,
-    },
-})
 
-const addName = () => {
-console.log('name added');
+const addMoney = () => {
+console.log('money added');
 }
 
 module.exports = {
-    sequelize: sequelize,
-    Names: Names,
-    addName: addName
+    database: database,
+    Sequelize: Sequelize,
+    addMoney: addMoney
 };
