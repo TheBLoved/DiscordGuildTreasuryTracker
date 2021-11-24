@@ -17,18 +17,22 @@ module.exports = {
             message.reply(`<@${message.author.id}>, ${e}.`);
           });
           break;
-        case '!logmoney':
+        case '!logdonation':
           logMoney(stringToDouble(args), message.author.id).then(log => {
             message.reply(`<@${log.dataValues.discordAccountId}>, I have logged your ${log.dataValues.value} gold!`);
           }).catch (e => {
             message.reply(`<@${message.author.id}>, ${e}.`);
           });
           break;
-        case '!getweek':
-          getweek();
+        case '!ledgerhelp':
+          message.reply('Use "!addname" to initally register to the guild ledger\nUse "!logdonation {value}" to log your weekly donations to the guild bank\nUse "!ledgerhelp" to see this message');
           break;
-        case '!recenttransactions':
-          recentTransactions();
+        case '!logspending':
+          logMoney(stringToDouble(args), message.author.id, true).then(log => {
+            message.reply(`<@${log.dataValues.discordAccountId}>, I have logged your ${log.dataValues.value} gold spent!`);
+          }).catch (e => {
+            message.reply(`<@${message.author.id}>, ${e}.`)
+          })
           break;
         default:
           return;

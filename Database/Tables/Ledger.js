@@ -10,6 +10,9 @@ const Ledger = database.define('ledger', {
     },
     value: {
         type: Sequelize.DOUBLE
+    },
+    valueWasSpent: {
+        type: Sequelize.BOOLEAN
     }
 });
 Ledger.belongsTo(Names, {foreignKey: 'discordAccountId'});
