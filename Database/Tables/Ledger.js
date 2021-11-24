@@ -12,7 +12,7 @@ const Ledger = database.define('ledger', {
         type: Sequelize.DOUBLE
     }
 });
-Ledger.belongsTo(Names, {foreignKey: 'Name'});
+Ledger.belongsTo(Names, {foreignKey: 'discordAccountId'});
 
 module.exports = {
     Ledger: Ledger
