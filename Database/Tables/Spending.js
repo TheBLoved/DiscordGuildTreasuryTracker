@@ -1,7 +1,7 @@
 const { Names }  = require('./Names');
 const { database, Sequelize } = require('./../database');
 
-const Ledger = database.define('ledger', {
+const Spending = database.define('spending', {
     week: {
         type: Sequelize.INTEGER
     },
@@ -10,10 +10,13 @@ const Ledger = database.define('ledger', {
     },
     value: {
         type: Sequelize.DOUBLE
+    },
+    reasonForSpending: {
+        type: Sequelize.STRING
     }
 });
-Ledger.belongsTo(Names, {foreignKey: 'discordAccountId'});
+Spending.belongsTo(Names, {foreignKey: 'discordAccountId'});
 
 module.exports = {
-    Ledger: Ledger
+    Spending: Spending
 };

@@ -1,13 +1,14 @@
-const { Ledger } = require('./../Tables/Ledger');
+const { Spending } = require('./../Tables/Spending');
 const { getCurrentWeek } = require('./../../conversions');
 
-const logMoney = async (value, discordAccountId) => {
+const logSpending = async (value, discordAccountId, reason) => {
     try {
-        const log = await Ledger.create({
+        const log = await Spending.create({
             week: getCurrentWeek(),
             year: new Date().getFullYear(),
             value: value,
             discordAccountId: discordAccountId,
+            reasonForSpending: reason
         });
         return log;
     } catch (e) {
@@ -20,5 +21,5 @@ const logMoney = async (value, discordAccountId) => {
 };
 
 module.exports = {
-    logMoney: logMoney,
+    logSpending: logSpending,
 };
