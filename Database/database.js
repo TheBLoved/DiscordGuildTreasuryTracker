@@ -1,6 +1,7 @@
 // database.js
 
 const Sequelize = require('sequelize');
+
 const database = new Sequelize(process.env.DB_SCHEMA || 'sqlite',
                                 process.env.DB_USER || 'sqlite',
                                 process.env.DB_PASSWORD || '',
@@ -12,17 +13,7 @@ const database = new Sequelize(process.env.DB_SCHEMA || 'sqlite',
                                     storage: 'database.sqlite'
                                 });
 
-const addName = () => {
-    console.log('name added');
-};
-
-const logMoney = (value) => {
-    console.log(`${value} gold logged`);
-};
-
 module.exports = {
     database: database,
     Sequelize: Sequelize,
-    addName: addName,
-    logMoney: logMoney,
 };
