@@ -1,5 +1,6 @@
 const { addName } = require('./../Database/Commands/addName');
 const { logMoney } = require('./../Database/Commands/logMoney');
+const { logSpending } = require('./../Database/Commands/logSpending');
 const { stringToDouble } = require('./../conversions');
 
 module.exports = {
@@ -18,21 +19,33 @@ module.exports = {
           });
           break;
         case '!logdonation':
-          logMoney(stringToDouble(args), message.author.id).then(log => {
-            message.reply(`<@${log.dataValues.discordAccountId}>, I have logged your ${log.dataValues.value} gold!`);
-          }).catch (e => {
+          try{
+            logMoney(stringToDouble(args), message.author.id).then(log => {
+              message.reply(`<@${log.dataValues.discordAccountId}>, I have logged your ${log.dataValues.value} gold!`);
+            }).catch (e => {
+              message.reply(`<@${message.author.id}>, ${e}.`);
+            });
+          } catch (e) {
             message.reply(`<@${message.author.id}>, ${e}.`);
-          });
+          }
           break;
         case '!ledgerhelp':
           message.reply('Use "!addname" to initally register to the guild ledger\nUse "!logdonation {value}" to log your weekly donations to the guild bank\nUse "!ledgerhelp" to see this message');
           break;
         case '!logspending':
-          logMoney(stringToDouble(args), message.author.id, true).then(log => {
-            message.reply(`<@${log.dataValues.discordAccountId}>, I have logged your ${log.dataValues.value} gold spent!`);
-          }).catch (e => {
+          try {
+            const [value, reason] = args.split(/ (.+)/);
+            if (reason === undefined) {
+              throw 'please enter a reason for spending the gold, e.g. "!logspending 1000 Upgrading repeaters to teir 3"';
+            }
+            logSpending(stringToDouble(value), message.author.id, reason).then(log => {
+              message.reply(`<@${log.dataValues.discordAccountId}>, I have logged your ${log.dataValues.value} gold spent, for reason: "${reason}"!`);
+            }).catch (e => {
+              message.reply(`<@${message.author.id}>, ${e}.`)
+            });
+          } catch (e) {
             message.reply(`<@${message.author.id}>, ${e}.`)
-          })
+          }
           break;
         default:
           return;
