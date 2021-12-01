@@ -1,6 +1,7 @@
 const { addName } = require('./../Database/Commands/addName');
 const { logMoney } = require('./../Database/Commands/logMoney');
 const { logSpending } = require('./../Database/Commands/logSpending');
+const { checkWeek } = require('./../Database/Commands/checkWeek');
 const { stringToDouble } = require('./../conversions');
 
 module.exports = {
@@ -30,7 +31,7 @@ module.exports = {
           }
           break;
         case '!ledgerhelp':
-          message.reply('Use "!addname" to initally register to the guild ledger\nUse "!logdonation {value}" to log your weekly donations to the guild bank\nUse "!ledgerhelp" to see this message');
+          message.reply('Use "!addname" to initally register to the guild ledger\nUse "!logdonation {value}" to log your weekly donations to the guild bank\nUse "!logspending {value} {reason}" to record if you spend money in the bank.\nUse "!checkweek to see who hasn\'t paid in the current week.\nUse "!ledgerhelp" to see this message');
           break;
         case '!logspending':
           try {
@@ -46,6 +47,21 @@ module.exports = {
           } catch (e) {
             message.reply(`<@${message.author.id}>, ${e}.`)
           }
+          break;
+        case '!checkweek':
+          checkWeek().then(namesNotPaid => {
+            if (namesNotPaid.length === 0) {
+              message.reply('Everyone on the Ledger has paid this week!');
+            } else {
+              let replyString = 'The following people have not yet paid this week:\n';
+              for (nameId of namesNotPaid) {
+                replyString = replyString.concat(`\n\t- <@${nameId}>`);
+              }
+              message.reply(replyString);
+            }
+          }).catch (e => {
+            message.reply(`<@${message.author.id}>, ${e}.`)
+          });
           break;
         default:
           return;
