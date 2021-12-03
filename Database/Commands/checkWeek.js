@@ -10,7 +10,8 @@ const checkWeek = async () => {
         let week = await Ledger.findAll({
             attributes: [ 'discordAccountId' ],
             where: {
-                week: getCurrentWeek()
+                week: getCurrentWeek(),
+                year: new Date().getFullYear()
             }
         });
         names = names.map(name => {
