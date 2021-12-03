@@ -2,6 +2,7 @@ const { addName } = require('./../Database/Commands/addName');
 const { logMoney } = require('./../Database/Commands/logMoney');
 const { logSpending } = require('./../Database/Commands/logSpending');
 const { checkWeek } = require('./../Database/Commands/checkWeek');
+const { checkSpending } = require('./../Database/Commands/checkSpending');
 const { stringToDouble } = require('./../conversions');
 
 module.exports = {
@@ -56,6 +57,21 @@ module.exports = {
               let replyString = 'The following people have not yet paid this week:\n';
               for (nameId of namesNotPaid) {
                 replyString = replyString.concat(`\n\t- <@${nameId}>`);
+              }
+              message.reply(replyString);
+            }
+          }).catch (e => {
+            message.reply(`<@${message.author.id}>, ${e}.`)
+          });
+          break;
+        case '!checkspending':
+          checkSpending().then(week => {
+            if (week.length === 0) {
+              message.reply('Nothing has been spent this week.');
+            } else {
+              let replyString = 'The following costs have been spent this week:\n';
+              for (transaction of week) {
+                replyString = replyString.concat(`\n\t- Spender: <@${transaction.discordAccountId}>\t\t\tCost: ${transaction.value}\t\t\tReason: ${transaction.reasonForSpending}`);
               }
               message.reply(replyString);
             }
